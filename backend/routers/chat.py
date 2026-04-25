@@ -7,4 +7,5 @@ router = APIRouter()
 @router.post("/chat")
 def chat_endpoint(payload: ChatRequest):
     response = generate_ai_response(payload.message)
-    return {"response": response}
+    return {"reply": response}
+
