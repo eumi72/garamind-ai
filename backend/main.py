@@ -1,32 +1,20 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+
+from routers.health import router as health_router
+from routers.chat import router as chat_router
 
 app = FastAPI()
 
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # per ora accettiamo tutto
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Modello per /chat
-class ChatRequest(BaseModel):
-    message: str
-
-@app.get('/health')
-def health():
-    return {'status': 'ok'}
-
-@app.get("/ping")
-def ping():
-    return {"message": "pong"}
-
-@app.post("/chat")
-def chat(req: ChatRequest):
-    return {"reply": f"Hai detto: {req.message}"}
-
-
+# Routers
+app.include_router(health_router)
+app.include_router(chat_router)
